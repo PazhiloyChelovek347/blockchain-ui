@@ -12,7 +12,7 @@ import { abi } from "./abi";
 const web3 = new Web3("http://127.0.0.1:7545");
 const contract = new web3.eth.Contract(
   abi,
-  "0x8742495dF78D9Cd3eE6211a7dddC84Efec6232eE",
+  "0x2d6576E362cda36b8F6A98Ca9B8402eD370E2705",
   { gas: "1000000" }
 );
 
@@ -22,11 +22,10 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
-        <Header />
         {/* <StartPage /> */}
         <Routes>
-          <Route path="/" element={<StartPage contract={contract} />} />
-          {!!role && <Route path="/users/:address" element={<OwnerPage />} />}
+          <Route path="/" element={<StartPage contract={contract} web3={web3} />} />
+          {/* {!!role && <Route path="/users/:address" element={<OwnerPage />} />} */}
         </Routes>
       </BrowserRouter>
     </div>

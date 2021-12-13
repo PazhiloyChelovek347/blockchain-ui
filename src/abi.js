@@ -60,7 +60,30 @@ export const abi = [
 			}
 		],
 		"name": "createBook",
-		"outputs": [],
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "date",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "masterId",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "customerId",
+						"type": "address"
+					}
+				],
+				"internalType": "struct Contract.Book",
+				"name": "",
+				"type": "tuple"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -349,6 +372,11 @@ export const abi = [
 				"internalType": "address payable",
 				"name": "masterId",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "rubles",
+				"type": "uint256"
 			}
 		],
 		"name": "payBooking",
@@ -370,7 +398,13 @@ export const abi = [
 			}
 		],
 		"name": "setRole",
-		"outputs": [],
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
