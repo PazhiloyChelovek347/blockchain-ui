@@ -1,46 +1,70 @@
-import { Card } from '@mui/material';
-import React, { memo, useState } from 'react';
-import { FormGroup, TextField, Button } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { signin } from '../../redux/actionCreators/basicActions';
+import { Card } from "@mui/material";
+import React, { memo, useState } from "react";
+import { FormGroup, TextField, Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { signin } from "../../redux/actionCreators/basicActions";
 
 const StartPage = ({ contract }) => {
-    const [ signinAddress, setSigninAddress ] = useState('');
-    const [ signinPassword, setSigninPassword ] = useState('');
-    const [ signupAddress, setSignupAddress ] = useState('');
-    const [ signupPassword, setSignupPassword ] = useState('');
-    const [ repeatSignupPassword, setRepeatSignupPassword ]= useState('');
+  const [signinAddress, setSigninAddress] = useState("");
+  const [signinPassword, setSigninPassword] = useState("");
+  const [signupAddress, setSignupAddress] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  const [repeatSignupPassword, setRepeatSignupPassword] = useState("");
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const t = () => {
+    contract.methods
+      .createUser("0xaA0CB0381E6b0c211cC420E77c6FdC9Db4FcF3d6", "suka", "blyad")
+      .call()
+      .then((d) => console.log(d));
+  };
 
-    const handleSigninAddressChange = (event) => {
-        setSigninAddress(event.target.value);
-    };
-    const handleSigninPasswordChange = (event) => {
-        setSigninPassword(event.target.value);
-    }
-    const handleSignin = () => {
+  const payTest = () => {
+    contract.methods
+      .payBooking("0xaA0CB0381E6b0c211cC420E77c6FdC9Db4FcF3d6", "suka", "blyad")
+      .call()
+      .then((d) => console.log(d));
+  };
 
-        contract.methods.authorization(signinAddress, signinPassword).call().then((data) => dispatch(signin({ address: signinAddress, role: 2})));
-    }
-    const handleSignupPasswordChange = (event) => {
-        setSignupPassword(event.target.value);
-    }
-    const handleSignupAddressChange = (event) => {
-        setSignupAddress(event.target.value);
-    }
-    const handleRepeatSignupPasswordChange = (event) => {
-        setRepeatSignupPassword(event.target.value);
-    }
-    const handleSignup = () => {
-        //contract signup call
-        console.log('front', signupAddress);
-        contract.methods.registerUser(signupAddress, 2, repeatSignupPassword, signupPassword).call().then((data) => console.log(data));
-    }
+  const handleSigninAddressChange = (event) => {
+    setSigninAddress(event.target.value);
+  };
+  const handleSigninPasswordChange = (event) => {
+    setSigninPassword(event.target.value);
+  };
+  const handleSignin = () => {
+    contract.methods
+      .authorization(signinAddress, signinPassword)
+      .call()
+      .then((data) => dispatch(signin({ address: signinAddress, role: 2 })));
+  };
+  const handleSignupPasswordChange = (event) => {
+    setSignupPassword(event.target.value);
+  };
+  const handleSignupAddressChange = (event) => {
+    setSignupAddress(event.target.value);
+  };
+  const handleRepeatSignupPasswordChange = (event) => {
+    setRepeatSignupPassword(event.target.value);
+  };
+  const handleSignup = () => {
+    //contract signup call
+    console.log("front", signupAddress);
+    contract.methods
+      .registerUser(signupAddress, 2, repeatSignupPassword, signupPassword)
+      .call()
+      .then((data) => console.log(data));
+  };
 
-    return (
-        <div style={{ display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
-            <div style={{ width: 600 }}>
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-around",
+        alignContent: "center",
+      }}
+    >
+      {/* <div style={{ width: 600 }}>
             <FormGroup>
         <TextField
           label="Address"
@@ -62,7 +86,7 @@ const StartPage = ({ contract }) => {
         />
       </FormGroup>
       <FormGroup>
-        <Button
+      <Button
           type="submit"
           value="submit"
           onClick={handleSignin}
@@ -112,8 +136,15 @@ const StartPage = ({ contract }) => {
         </Button>
       </FormGroup>
             </div>
-        </div>
-    )
-}
+              <Button
+              type="submit"
+              value="submit"
+              onClick={t}
+            >
+         aaaaaaaa
+            </Button> */}
+    </div>
+  );
+};
 
 export default memo(StartPage);
