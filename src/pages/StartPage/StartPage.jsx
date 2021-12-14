@@ -1,187 +1,122 @@
-import { Card } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import React, { memo, useState } from "react";
 import { FormGroup, TextField, Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { signin } from "../../redux/actionCreators/basicActions";
 
 const StartPage = ({ contract, web3 }) => {
-  const [signinAddress, setSigninAddress] = useState("");
-  const [signinPassword, setSigninPassword] = useState("");
-  const [signupAddress, setSignupAddress] = useState("");
-  const [signupPassword, setSignupPassword] = useState("");
-  const [repeatSignupPassword, setRepeatSignupPassword] = useState("");
+  const [logs, setLogs] = useState([]);
+  const [inv, setInv] = useState({});
+  const [chen, setChen] = useState({});
+  const [lastBooking, setBooking] = useState({});
 
-  const dispatch = useDispatch();
-  const u1 = () => {
+
+  // const dispatch = useDispatch();
+  const u1 = async () => {
     contract.methods
-      .createUser("0x23417873B83D20232e3281800FF0c7A974dBe21A", "chen", "1pos")
-      .call()
-      .then((d) => console.log(d));
+      .createUser("0xCfaA18F0616309874573dc4b5c9eDcf346E22895", "chen", "1pos")
+      .send({ from: "0xCfaA18F0616309874573dc4b5c9eDcf346E22895" });
+    const u = await contract.methods
+      .getUser("0xCfaA18F0616309874573dc4b5c9eDcf346E22895")
+      .call();
+    setInv({ role: u[4], balance: web3.utils.fromWei((await web3.eth.getBalance('0xCfaA18F0616309874573dc4b5c9eDcf346E22895'))) });
   };
 
-  const u2 = () => {
+  const u2 = async () => {
     contract.methods
-      .createUser("0x39d05Ef8862F68C024ad4e046D2a0eDF58ACaA12", "invoker", "5pos")
-      .call()
-      .then((d) => console.log(d));
+      .createUser(
+        "0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd",
+        "invoker",
+        "5pos"
+      )
+      .send({ from: "0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd" });
+    const u = await contract.methods
+      .getUser("0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd")
+      .call();
+    setChen({ role: u[4], balance: web3.utils.fromWei((await web3.eth.getBalance('0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd'))) });
   };
 
-  const payTest = () => {
+  const gi = () => {
     contract.methods
-      .setRole('0x39d05Ef8862F68C024ad4e046D2a0eDF58ACaA12', 1)
+      .getUser("0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd")
       .call()
-      .then((d) => (console.log(d)))
-    contract.methods
-      .createBook('2021.21.12', '0x39d05Ef8862F68C024ad4e046D2a0eDF58ACaA12', '0x23417873B83D20232e3281800FF0c7A974dBe21A')
-      .call()
-      .then((d) => (console.log(d)))
-    web3.eth.sendTransaction({
-      from: '0x23417873B83D20232e3281800FF0c7A974dBe21A',
-      to: '0x39d05Ef8862F68C024ad4e046D2a0eDF58ACaA12',
-      value: web3.utils.toWei("0.5", "ether")
-    })
+      .then((d) => {
+        console.log(d);
+      });
   };
 
-  // const handleSigninAddressChange = (event) => {
-  //   setSigninAddress(event.target.value);
-  // };
-  // const handleSigninPasswordChange = (event) => {
-  //   setSigninPassword(event.target.value);
-  // };
-  // const handleSignin = () => {
-  //   contract.methods
-  //     .authorization(signinAddress, signinPassword)
-  //     .call()
-  //     .then((data) => dispatch(signin({ address: signinAddress, role: 2 })));
-  // };
-  // const handleSignupPasswordChange = (event) => {
-  //   setSignupPassword(event.target.value);
-  // };
-  // const handleSignupAddressChange = (event) => {
-  //   setSignupAddress(event.target.value);
-  // };
-  // const handleRepeatSignupPasswordChange = (event) => {
-  //   setRepeatSignupPassword(event.target.value);
-  // };
-  // const handleSignup = () => {
-  //   //contract signup call
-  //   console.log("front", signupAddress);
-  //   contract.methods
-  //     .registerUser(signupAddress, 2, repeatSignupPassword, signupPassword)
-  //     .call()
-  //     .then((data) => console.log(data));
-  // };
+  const payTest = async () => {
+    await contract.methods
+      .setRole("0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd", 1)
+      .send({ from: "0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd" });
+      await contract.methods
+      .createBook(
+        "2021.21.12",
+        "0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd",
+        "0xCfaA18F0616309874573dc4b5c9eDcf346E22895"
+        )
+        .send({ from: "0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd" });
+        const u1 = await contract.methods
+        .getUser("0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd")
+        .call();
+      setInv({ role: u1[4], balance: web3.utils.fromWei((await web3.eth.getBalance('0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd'))) });
+      const u2 = await contract.methods
+        .getUser("0xCfaA18F0616309874573dc4b5c9eDcf346E22895")
+        .call();
+      setChen({ role: u2[4], balance: web3.utils.fromWei((await web3.eth.getBalance('0xCfaA18F0616309874573dc4b5c9eDcf346E22895'))) });
+    setBooking((await contract.methods.getBookings().call()));
+    await web3.eth.sendTransaction({
+      from: "0xCfaA18F0616309874573dc4b5c9eDcf346E22895",
+      to: "0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd",
+      value: web3.utils.toWei("0.5", "ether"),
+    });
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        alignContent: "center",
-      }}
-    >
-      <Button
-        type="submit"
-        value="submit"
-        onClick={payTest}
+    <>
+      <div
+        style={{
+          display: "grid",
+          justifyContent: "space-around",
+          width: "200px",
+          gap: 15,
+          margin: 10,
+        }}
       >
-        Send and book from chen to invoker
-      </Button>
-      <Button
-        type="submit"
-        value="submit"
-        onClick={u1}
-      >
-        Create chen
-      </Button>
-      <Button
-        type="submit"
-        value="submit"
-        onClick={u2}
-      >
-        Create invoker
-      </Button>
-
-      {/* <div style={{ width: 600 }}>
-            <FormGroup>
-        <TextField
-          label="Address"
-          variant="standard"
-          type="text"
-          onChange={handleSigninAddressChange}
-          value={signinAddress}
-          required
-        />
-      </FormGroup>
-      <FormGroup>
-        <TextField
-          label="Password"
-          variant="standard"
-          type="password"
-          onChange={handleSigninPasswordChange}
-          value={signinPassword}
-          required
-        />
-      </FormGroup>
-      <FormGroup>
-      <Button
-          type="submit"
-          value="submit"
-          onClick={handleSignin}
-        >
-          SIGN IN
+        <Button type="submit" value="submit" onClick={u1} variant="contained">
+          Create chen
         </Button>
-      </FormGroup>
-            </div>
-            <div style={{ width: 600 }}>
-            <FormGroup>
-        <TextField
-          label="Address"
-          variant="standard"
-          type="text"
-          onChange={handleSignupAddressChange}
-          value={signupAddress}
-          required
-        />
-      </FormGroup>
-      <FormGroup>
-        <TextField
-          label="Password"
-          variant="standard"
-          type="password"
-          onChange={handleSignupPasswordChange}
-          value={signupPassword}
-          required
-        />
-      </FormGroup>
-      <FormGroup>
-        <TextField
-          label="Repeat Password"
-          variant="standard"
-          type="password"
-          onChange={handleRepeatSignupPasswordChange}
-          value={repeatSignupPassword}
-          required
-        />
-      </FormGroup>
-      <FormGroup>
+        <Button type="submit" value="submit" onClick={u2} variant="contained">
+          Create invoker
+        </Button>
         <Button
           type="submit"
           value="submit"
-          onClick={handleSignup}
+          onClick={payTest}
+          variant="contained"
         >
-          SIGN UP
+          Send and book from chen to invoker
         </Button>
-      </FormGroup>
-            </div>
-              <Button
-              type="submit"
-              value="submit"
-              onClick={t}
-            >
-         aaaaaaaa
-            </Button> */}
-    </div>
+        <Button type="submit" value="submit" onClick={gi} variant="contained">
+          get invoker
+        </Button>
+
+      </div>
+      <div
+        style={{
+          display: "grid",
+          justifyContent: "space-around",
+          width: "200px",
+          gap: 15,
+          margin: 10,
+        }}
+      >
+        <Typography>Logs:</Typography>
+        <Typography style={{wordBreak: 'break-all'}}>{`chen role ${inv.role},money ${inv.balance}`}</Typography>
+        <Typography style={{wordBreak: 'break-all'}}>{`invoker role ${chen.role},money ${chen.balance}`}</Typography>
+        <Typography style={{wordBreak: 'break-all'}}>{`booking: ${lastBooking}`}</Typography>
+      </div>
+    </>
   );
 };
 

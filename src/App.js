@@ -12,7 +12,7 @@ import { abi } from "./abi";
 const web3 = new Web3("http://127.0.0.1:7545");
 const contract = new web3.eth.Contract(
   abi,
-  "0x2d6576E362cda36b8F6A98Ca9B8402eD370E2705",
+  "0x8bba934c2a2DF572043A78cd062008a1CadbB6D7",
   { gas: "1000000" }
 );
 
