@@ -5,7 +5,7 @@ const StartPage = ({ contract, web3 }) => {
   const [logs, setLogs] = useState([]);
   const [inv, setInv] = useState({});
   const [chen, setChen] = useState({});
-  const [lastBooking, setBooking] = useState({});
+  const [lastBooking, setBooking] = useState([[]]);
 
   const u1 = async () => {
     contract.methods
@@ -14,7 +14,7 @@ const StartPage = ({ contract, web3 }) => {
     const u = await contract.methods
       .getUser("0xCfaA18F0616309874573dc4b5c9eDcf346E22895")
       .call();
-    setInv({
+    setChen({
       role: u[4],
       balance: web3.utils.fromWei(
         await web3.eth.getBalance("0xCfaA18F0616309874573dc4b5c9eDcf346E22895")
@@ -33,7 +33,7 @@ const StartPage = ({ contract, web3 }) => {
     const u = await contract.methods
       .getUser("0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd")
       .call();
-    setChen({
+    setInv({
       role: u[4],
       balance: web3.utils.fromWei(
         await web3.eth.getBalance("0xDCcfE0E4782340Cb93e21BA4e4774991377Ee6Dd")
@@ -128,10 +128,10 @@ const StartPage = ({ contract, web3 }) => {
         <Typography>Logs:</Typography>
         <Typography
           style={{ wordBreak: "break-all" }}
-        >{`chen role ${inv.role},money ${inv.balance}`}</Typography>
+        >{`invoker role ${inv.role},money ${inv.balance}`}</Typography>
         <Typography
           style={{ wordBreak: "break-all" }}
-        >{`invoker role ${chen.role},money ${chen.balance}`}</Typography>
+        >{`chen role ${chen.role},money ${chen.balance}`}</Typography>
         <Typography
           style={{ wordBreak: "break-all" }}
         >{`booking: ${lastBooking[0][0]}`}</Typography>
